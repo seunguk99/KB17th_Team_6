@@ -1,0 +1,66 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "홍길동",
+      "email": "hong@test.com"
+    },
+    {
+      "id": 2,
+      "name": "김철수",
+      "email": "kim@test.com"
+    }
+  ],
+  "budget": [
+    {
+      "id": 1,
+      "userId": 1,
+      "date": "2025-04-01",
+      "type": "income",
+      "category": "월급",
+      "amount": 3000000,
+      "memo": "3월 급여"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "date": "2025-04-02",
+      "type": "expense",
+      "category": "식비",
+      "amount": 4500,
+      "memo": "도시락 구매"
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "date": "2025-04-03",
+      "type": "expense",
+      "category": "교통비",
+      "amount": 1250,
+      "memo": "출근 지하철"
+    },
+    {
+      "id": 4,
+      "userId": 2,
+      "date": "2025-04-04",
+      "type": "income",
+      "category": "용돈",
+      "amount": 100000,
+      "memo": "월초 용돈"
+    }
+  ],
+  "incomeCategory": [
+    { "id": 1, "name": "월급" },
+    { "id": 2, "name": "용돈" },
+    { "id": 3, "name": "이자" },
+    { "id": 4, "name": "기타" }
+  ],
+  "expenseCategory": [
+    { "id": 1, "name": "식비" },
+    { "id": 2, "name": "교통비" },
+    { "id": 3, "name": "주거비" },
+    { "id": 4, "name": "유흥" },
+    { "id": 5, "name": "공과금" },
+    { "id": 6, "name": "기타" }
+  ]
+}
