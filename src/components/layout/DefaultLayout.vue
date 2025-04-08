@@ -1,11 +1,12 @@
-<!-- ./components/layouts/DefaultLayout.vue -->
 <template>
-  <div class="container">
+  <div class="position-relative min-vh-100">
     <slot name="header"></slot>
     <slot name="navbar"></slot>
-    <div class="content my-5 px-3">
-      <slot></slot>
+
+    <div class="content-scroll flex-grow-1 container my-4">
+      <slot />
     </div>
+
     <slot name="footer"></slot>
   </div>
 </template>
