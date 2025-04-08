@@ -11,7 +11,7 @@
       "email": "kim@test.com"
     }
   ],
-  "budget": [
+  "transactions": [
     {
       "id": 1,
       "userId": 1,
