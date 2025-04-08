@@ -2,7 +2,7 @@
 
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useTransactionStore = defineStore('transaction', () => {
   const TsURL = '/api/transactions';
@@ -16,6 +16,15 @@ export const useTransactionStore = defineStore('transaction', () => {
   const selectedMonth = ref(null);
   // const selectedCategory = ref(null);
   const selectedType = ref(null);
+
+  // getters
+  const income = computed(() => {
+    filterdTransactions.value.filter((ts) => ts.type === 'income');
+  });
+
+  const expense = computed(() => {
+    filterdTransactions.value.filter((ts) => ts.type === 'expense');
+  });
 
   // action
   // 거래 내역 리스트 불러오기
@@ -56,5 +65,7 @@ export const useTransactionStore = defineStore('transaction', () => {
     transactionList,
     selectTransaction,
     selectFilter,
+    income,
+    expense,
   };
 });
