@@ -18,9 +18,8 @@
       "date": "2025-04-01",
       "type": "income",
       "category": "월급",
-      "amount": 10000,
-      "memo": "3월 급여",
-      "name": "홍길동"
+      "amount": 3000000,
+      "memo": "3월 급여"
     },
     {
       "id": 2,
@@ -48,86 +47,20 @@
       "category": "용돈",
       "amount": 100000,
       "memo": "월초 용돈"
-    },
-    {
-      "type": "income",
-      "date": "2025-04-10",
-      "name": "홍길동",
-      "amount": 1000,
-      "memo": "",
-      "category": "월급",
-      "id": 5
-    },
-    {
-      "type": "income",
-      "date": "",
-      "name": "홍길동",
-      "amount": 4,
-      "memo": "fds",
-      "category": "기타",
-      "id": 6
-    },
-    {
-      "type": "expense",
-      "date": "",
-      "name": "",
-      "amount": "",
-      "memo": "",
-      "category": "",
-      "id": 7
-    },
-    {
-      "type": "expense",
-      "date": "",
-      "name": "",
-      "amount": "",
-      "memo": "",
-      "category": "",
-      "id": 8
     }
   ],
   "incomeCategory": [
-    {
-      "id": 1,
-      "name": "월급"
-    },
-    {
-      "id": 2,
-      "name": "용돈"
-    },
-    {
-      "id": 3,
-      "name": "이자"
-    },
-    {
-      "id": 4,
-      "name": "기타"
-    }
+    { "id": 1, "name": "월급" },
+    { "id": 2, "name": "용돈" },
+    { "id": 3, "name": "이자" },
+    { "id": 4, "name": "기타" }
   ],
   "expenseCategory": [
-    {
-      "id": 1,
-      "name": "식비"
-    },
-    {
-      "id": 2,
-      "name": "교통비"
-    },
-    {
-      "id": 3,
-      "name": "주거비"
-    },
-    {
-      "id": 4,
-      "name": "유흥"
-    },
-    {
-      "id": 5,
-      "name": "공과금"
-    },
-    {
-      "id": 6,
-      "name": "기타"
-    }
+    { "id": 1, "name": "식비" },
+    { "id": 2, "name": "교통비" },
+    { "id": 3, "name": "주거비" },
+    { "id": 4, "name": "유흥" },
+    { "id": 5, "name": "공과금" },
+    { "id": 6, "name": "기타" }
   ]
 }
