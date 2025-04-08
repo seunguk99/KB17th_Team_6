@@ -53,30 +53,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRoute, useRouter, RouterLink } from 'vue-router';
-import axios from 'axios';
+import { useRoute } from 'vue-router';
+import { onMounted, computed } from 'vue';
+import { useTransactionStore } from '@/stores/transactionStore';
 
 const route = useRoute();
-const router = useRouter();
 const id = parseInt(route.params.id);
 
-const transaction = ref(null);
+const transactionStore = useTransactionStore();
 
-const load = async () => {
-  try {
-    const txRes = await axios.get(`/api/transactions/${id}`);
-    transaction.value = txRes.data;
-  } catch (err) {
-    console.error('불러오기 오류:', err);
+onMounted(async () => {
+  // 거래 목록 없으면 먼저 불러오기
+  if (transactionStore.transactions.length === 0) {
+    await transactionStore.transactionList();
   }
-};
 
-const remove = async () => {
-  if (!confirm('이 거래를 삭제할까요?')) return;
-  await axios.delete(`/api/transactions/${id}`);
-  router.push('/transactions');
-};
+  // 선택된 거래 설정
+  transactionStore.selectTransaction(id);
+});
 
-load();
+const transaction = computed(() => transactionStore.selectedTransaction);
 </script>
