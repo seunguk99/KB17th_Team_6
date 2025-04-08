@@ -1,5 +1,5 @@
 <template>
-  <div class="position-relative min-vh-100">
+  <div class="d-flex flex-column flex-wrap min-vh-100">
     <slot name="header"></slot>
     <slot name="navbar"></slot>
 
