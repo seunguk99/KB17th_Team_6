@@ -3,6 +3,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import { computed, ref } from 'vue';
+import { useUserStore } from './userStore';
 
 export const useTransactionStore = defineStore('transaction', () => {
   const TsURL = '/api/transactions';
@@ -30,7 +31,13 @@ export const useTransactionStore = defineStore('transaction', () => {
   // 거래 내역 리스트 불러오기
   const transactionList = async () => {
     const response = await axios.get(TsURL);
-    transactions.value = response.data;
+    const userStore = useUserStore();
+    const userId = userStore.currentUser?.id;
+    if (!userId) {
+      transactions.value = [];
+      return;
+    }
+    transactions.value = response.data.filter((tx) => tx.userId === userId);
   };
 
   // 현재 선택 거래
