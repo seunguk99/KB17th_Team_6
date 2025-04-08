@@ -1,7 +1,5 @@
 <template>
   <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">거래 내역</h1>
-
     <div v-if="transactions.length === 0">거래 내역이 없습니다.</div>
 
     <ul v-else class="space-y-4">
