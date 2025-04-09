@@ -87,8 +87,8 @@
         </tbody>
       </table>
       <div class="text-center my-4">
-        <button type="submit" class="btn btn-primary me-2">수정</button>
-        <button type="button" class="btn btn-secondary" @click="cancel">
+        <button type="submit" class="save-button me-2">저장</button>
+        <button type="button" class="cancel-button" @click="cancel">
           취소
         </button>
       </div>
@@ -187,5 +187,34 @@ const cancel = () => {
 .table th {
   width: 150px;
   background-color: #f8f9fa;
+}
+.save-button {
+  background-color: #f8f9fa;
+  border: 1px solid #007bff;
+  color: #007bff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.save-button:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.cancel-button {
+  background-color: #f8f9fa;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.cancel-button:hover {
+  background-color: #dc3545;
+  color: #fff;
 }
 </style>
