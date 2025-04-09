@@ -32,6 +32,7 @@
       </select>
     </div>
     <TransactionList />
+    <div class="float-end mt-3 mx-3">현재 잔액 : {{ total }}</div>
   </div>
 </template>
 
@@ -40,6 +41,8 @@ import { useTransactionStore } from '@/stores/transactionStore';
 import TransactionList from './TransactionList.vue';
 
 const store = useTransactionStore();
+
+const total = store.total;
 </script>
 
 <style scoped>

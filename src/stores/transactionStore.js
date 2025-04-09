@@ -7,6 +7,7 @@ import { useUserStore } from './userStore';
 
 export const useTransactionStore = defineStore('transaction', () => {
   const TsURL = '/api/transactions';
+  const userStore = useUserStore();
 
   // state
   const transactions = ref([]);
@@ -25,6 +26,26 @@ export const useTransactionStore = defineStore('transaction', () => {
 
   const expense = computed(() => {
     filterdTransactions.value.filter((ts) => ts.type === 'expense');
+  });
+
+  // 현재 남은 잔액
+  const total = computed(() => {
+    const userId = useUserStore().currentUser?.id;
+
+    const userTransactions = transactions.value.filter(
+      (ts) => ts.userId === userId
+    );
+
+    // 수입 합계
+    const incomeTotal = userTransactions
+      .filter((transaction) => transaction.type === 'income')
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
+    // 지출 합계
+    const expenseTotal = userTransactions
+      .filter((transaction) => transaction.type === 'expense')
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+    return incomeTotal - expenseTotal;
   });
 
   // action
@@ -74,5 +95,6 @@ export const useTransactionStore = defineStore('transaction', () => {
     selectFilter,
     income,
     expense,
+    total,
   };
 });
