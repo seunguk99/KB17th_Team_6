@@ -4,11 +4,12 @@
       <table class="table table-hover text-center mb-0">
         <thead>
           <tr class="table-header text-dark">
+            <th class="bg-sky text-dark py-3">이름</th>
             <th class="bg-sky text-dark py-3">날짜</th>
-            <th class="bg-sky text-dark">타입</th>
+            <th class="bg-sky text-dark">유형</th>
             <th class="bg-sky text-dark">금액</th>
             <th class="bg-sky text-dark">카테고리</th>
-            <th class="bg-sky text-dark"></th>
+            <th class="bg-sky text-dark">관리</th>
           </tr>
         </thead>
         <tbody>

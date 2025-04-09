@@ -1,5 +1,6 @@
 <template>
   <tr @click="TSdetail" style="cursor: pointer">
+    <td class="align-middle">{{ ts.name }}</td>
     <td class="align-middle">{{ ts.date }}</td>
 
     <td class="align-middle">
