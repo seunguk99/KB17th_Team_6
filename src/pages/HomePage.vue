@@ -111,10 +111,10 @@ fetch(
       }원`,
       start: transaction.date,
       end: transaction.date,
+      backgroundColor: transaction.type === 'income' ? '#3B71CA' : '#DC4C64',
     }));
   });
 
-// 계산된 값들을 computed로 정의
 const incomeTotal = computed(() =>
   transactions.value
     .filter((transaction) => transaction.type === 'income')

@@ -2,8 +2,8 @@
   <div class="container py-5">
     <h2 class="text-center mb-4">사용자를 선택해주세요</h2>
 
-    <div class="row justify-content-center">
-      <div v-for="user in users" :key="user.id" class="col-md-3 mb-3">
+    <div class="d-flex justify-content-center gap-5">
+      <div v-for="user in users" :key="user.id" class="">
         <button
           class="btn"
           :class="

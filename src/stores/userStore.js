@@ -8,13 +8,11 @@ export const useUserStore = defineStore('user', () => {
 
   // state
   const userList = ref([]);
-  // const currentUser = ref(null);
   const currentUser = ref(
     JSON.parse(sessionStorage.getItem('currentUser') || null)
   );
 
   // getter
-  // const isLoggedIn = computed(() => !!currentUser?.value);
   const isLoggedIn = computed(() => !!currentUser.value);
   const userName = computed(() => currentUser.value?.name || '');
   const userEmail = computed(() => currentUser.value?.email || '');
@@ -32,8 +30,8 @@ export const useUserStore = defineStore('user', () => {
   const updateUser = async (updateUser) => {
     try {
       const response = await axios.put(
-        USERS_API_PATH + `/${updatedUser.id}`,
-        updatedUser
+        USERS_API_PATH + `/${updateUser.id}`,
+        updateUser
       );
       currentUser.value = response.data;
 

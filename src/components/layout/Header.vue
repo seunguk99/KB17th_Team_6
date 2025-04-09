@@ -7,10 +7,20 @@
         </div>
 
         <div class="col-4 text-end">
-          <p class="m-0" v-if="userStore.isLoggedIn">
-            안녕하세요, <strong>{{ userStore.userName }}</strong
-            >님!
-          </p>
+          <div class="d-flex align-items-center justify-content-end gap-3">
+            <p class="m-0" v-if="userStore.isLoggedIn">
+              안녕하세요, <strong>{{ userStore.userName }}</strong
+              >님!
+            </p>
+
+            <router-link
+              to="/profile"
+              class="text-dark"
+              v-if="userStore.isLoggedIn"
+              title="프로필 설정"
+              ><i class="fa-solid fa-gear"></i>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -24,8 +34,6 @@ import { computed } from 'vue';
 
 const route = useRoute();
 const userStore = useUserStore();
-
-const userName = userStore.userName;
 
 const pageTitle = computed(() => route.meta.title || 'KB 6팀 가계부');
 </script>
