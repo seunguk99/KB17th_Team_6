@@ -58,12 +58,12 @@
     </div>
 
     <div class="text-center my-4">
-      <RouterLink class="btn btn-outline-primary me-2" to="/transactions">
+      <RouterLink class="btn btn-outline-secondary me-2" to="/transactions">
         <i class="fa-solid fa-list"></i> 목록
       </RouterLink>
       <RouterLink
         :to="`/transactions/${id}/edit`"
-        class="btn btn-outline-secondary me-2"
+        class="btn btn-outline-primary me-2"
       >
         <i class="fa-regular fa-pen-to-square"></i> 수정
       </RouterLink>
