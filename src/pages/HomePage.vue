@@ -160,7 +160,7 @@
               <tbody>
                 <tr v-for="transaction in transactions" :key="transaction.id">
                   <td>{{ transaction.date }}</td>
-                  <td>{{ transaction.category }}</td>
+                  <td>{{ transaction.name }}</td>
                   <td
                     :class="
                       transaction.type === 'income'

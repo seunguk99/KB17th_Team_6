@@ -125,14 +125,14 @@ const fetchTransaction = async () => {
   try {
     const res = await axios.get(`/api/transactions/${route.params.id}`);
     transaction.value = res.data;
-    transaction.value.userId = res.data.userId;
-
-    const user = userStore.userList.find(
-      (user) => user.id === transaction.value.userId
-    );
-    if (user) {
-      transaction.value.name = user.name;
-    }
+    // 거래 이름이 '거래자 이름'이 아니 거래의 이름을 뜯하도록 설계 변경
+    // transaction.value.userId = res.data.userId;
+    // const user = userStore.userList.find(
+    //   (user) => user.id === transaction.value.userId
+    // );
+    // if (user) {
+    //   transaction.value.name = user.name;
+    // }
   } catch (error) {
     console.error('거래 데이터를 불러오는 중 오류 발생:', error);
   }
