@@ -99,9 +99,13 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useTransactionStore } from '@/stores/transactionStore'; // transactionStore.js 사용
+import { useUserStore } from '@/stores/userStore'; // userStore.js 사용
 import axios from 'axios';
 
 const router = useRouter();
+const transactionStore = useTransactionStore(); // 거래 데이터 관리
+const userStore = useUserStore(); // 사용자 데이터 관리
 
 const transaction = ref({
   type: 'expense',
@@ -110,6 +114,7 @@ const transaction = ref({
   amount: '',
   memo: '',
   category: '',
+  userId: userStore.currentUser?.id, // userStore에서 현재 사용자 ID 사용
 });
 
 const incomeCategories = ref([]);
@@ -118,8 +123,8 @@ const expenseCategories = ref([]);
 const fetchCategories = async () => {
   try {
     const [incomeRes, expenseRes] = await Promise.all([
-      axios.get('http://localhost:3000/incomeCategory'),
-      axios.get('http://localhost:3000/expenseCategory'),
+      axios.get('/api/incomeCategory'),
+      axios.get('/api/expenseCategory'),
     ]);
     incomeCategories.value = incomeRes.data;
     expenseCategories.value = expenseRes.data;
@@ -128,16 +133,21 @@ const fetchCategories = async () => {
   }
 };
 
-onMounted(fetchCategories);
+onMounted(async () => {
+  await fetchCategories();
+  await transactionStore.transactionList(); // transactionStore에서 거래 목록 불러오기
+});
 
-const allCategories = computed(() => [
-  ...incomeCategories.value,
-  ...expenseCategories.value,
-]);
+const allCategories = computed(() => {
+  return transaction.value.type === 'income'
+    ? incomeCategories.value // 수입 카테고리 리스트
+    : expenseCategories.value; // 지출 카테고리 리스트
+});
 
 const submitTransaction = async () => {
   try {
-    await axios.post('http://localhost:3000/transactions', transaction.value);
+    await axios.post('/api/transactions', transaction.value);
+    await transactionStore.transactionList(); // 거래 목록 갱신
     alert('거래 내역이 등록되었습니다.');
     router.back();
   } catch (error) {
