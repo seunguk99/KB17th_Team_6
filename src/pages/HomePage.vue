@@ -73,7 +73,9 @@
             events-on-month-view
             :views="{ month: {} }"
             view="month"
+            :views-bar="false"
             :time="false"
+            @cell-click="onDayClick"
           >
           </vue-cal>
         </div>
@@ -114,6 +116,13 @@ fetch(
       backgroundColor: transaction.type === 'income' ? '#3B71CA' : '#DC4C64',
     }));
   });
+
+const clickedDate = ref(null);
+
+const onDayClick = (day) => {
+  console.log('Clicked cell:', day.cell);
+  console.log('Clicked date:', day.cell.start);
+};
 
 const incomeTotal = computed(() =>
   transactions.value
