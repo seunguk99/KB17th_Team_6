@@ -7,11 +7,14 @@
     <td>
       <RouterLink
         :to="`/transactions/${ts.id}/edit`"
-        class="badge bg-primary mx-1 text-decoration-none"
+        class="btn btn-primary mx-1 text-decoration-none"
         @click.stop
         >수정</RouterLink
       >
-      <button @click.stop="delTS(ts.id)" class="badge bg-danger border-1">
+      <button
+        @click.stop="delTS(ts.id)"
+        class="btn btn-danger text-decoration-none"
+      >
         삭제
       </button>
     </td>
