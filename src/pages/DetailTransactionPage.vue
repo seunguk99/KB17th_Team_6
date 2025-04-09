@@ -51,32 +51,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-import { useRoute, useRouter, RouterLink } from 'vue-router';
-import axios from 'axios';
-
-const route = useRoute();
-const router = useRouter();
-const id = parseInt(route.params.id);
-
-const transaction = ref(null);
-
-const load = async () => {
-  try {
-    const txRes = await axios.get(`/api/transactions/${id}`);
-    transaction.value = txRes.data;
-  } catch (err) {
-    console.error('불러오기 오류:', err);
-  }
-};
-
-const remove = async () => {
-  if (!confirm('이 거래를 삭제할까요?')) return;
-  await axios.delete(`/api/transactions/${id}`);
-  router.push('/transactions');
-};
-
-load();
-</script>
