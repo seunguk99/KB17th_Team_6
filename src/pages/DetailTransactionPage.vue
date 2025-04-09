@@ -1,56 +1,60 @@
 <template>
   <div class="container mt-4" v-if="transaction">
     <div
-      class="mb-4 p-4 rounded shadow-sm bg-white border border-secondary-subtle"
+      class="card shadow-sm border border-secondary-subtle mb-4 rounded-4 overflow-hidden"
     >
-      <h4 class="mb-4 fw-semibold text-dark text-center">
+      <div
+        class="card-header text-center fw-semibold fs-5 text-dark bg-white border-bottom-0"
+      >
         {{
           transaction.type === 'income'
             ? '💰 수입 상세 내역'
             : '💸 지출 상세 내역'
         }}
-      </h4>
+      </div>
 
-      <table class="table align-middle custom-table text-center">
-        <tbody>
-          <tr>
-            <th class="custom-th">📅 날짜</th>
-            <td>{{ transaction.date }}</td>
-          </tr>
-          <tr>
-            <th class="custom-th">📂 유형</th>
-            <td>
-              <span
-                class="badge"
+      <div class="card-body p-0">
+        <table class="table align-middle custom-table text-center mb-0">
+          <tbody>
+            <tr>
+              <th class="custom-th">날짜</th>
+              <td class="custom-td">{{ transaction.date }}</td>
+            </tr>
+            <tr>
+              <th class="custom-th">유형</th>
+              <td class="custom-td">
+                <span
+                  class="badge"
+                  :class="
+                    transaction.type === 'income' ? 'bg-success' : 'bg-danger'
+                  "
+                >
+                  {{ transaction.type === 'income' ? '수입' : '지출' }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th class="custom-th">금액</th>
+              <td
                 :class="
-                  transaction.type === 'income' ? 'bg-success' : 'bg-danger'
+                  transaction.type === 'income' ? 'text-success' : 'text-danger'
                 "
+                class="fw-semibold custom-td"
               >
-                {{ transaction.type === 'income' ? '수입' : '지출' }}
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <th class="custom-th">💵 금액</th>
-            <td
-              :class="
-                transaction.type === 'income' ? 'text-success' : 'text-danger'
-              "
-              class="fw-semibold"
-            >
-              {{ transaction.amount.toLocaleString() }}원
-            </td>
-          </tr>
-          <tr>
-            <th class="custom-th">📑 카테고리</th>
-            <td class="text-black">{{ transaction.category }}</td>
-          </tr>
-          <tr>
-            <th class="custom-th">📝 메모</th>
-            <td>{{ transaction.memo }}</td>
-          </tr>
-        </tbody>
-      </table>
+                {{ transaction.amount.toLocaleString() }}원
+              </td>
+            </tr>
+            <tr>
+              <th class="custom-th">카테고리</th>
+              <td class="custom-td text-black">{{ transaction.category }}</td>
+            </tr>
+            <tr>
+              <th class="custom-th">메모</th>
+              <td class="custom-td">{{ transaction.memo }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="text-center my-4">
@@ -70,6 +74,36 @@
   </div>
 </template>
 
+<script setup>
+import { useRoute, useRouter } from 'vue-router';
+import { onMounted, computed } from 'vue';
+import { useTransactionStore } from '@/stores/transactionStore';
+
+const route = useRoute();
+const router = useRouter();
+const id = parseInt(route.params.id);
+
+const transactionStore = useTransactionStore();
+
+onMounted(async () => {
+  if (transactionStore.transactions.length === 0) {
+    await transactionStore.transactionList();
+  }
+  transactionStore.selectTransaction(id);
+});
+
+const transaction = computed(() => transactionStore.selectedTransaction);
+
+const remove = async () => {
+  const isConfirmed = window.confirm('정말 삭제하시겠습니까?');
+  if (!isConfirmed) return;
+
+  await transactionStore.deleteTransaction(id);
+  await transactionStore.transactionList();
+  router.push('/transactions');
+};
+</script>
+
 <style scoped>
 .custom-th {
   background-color: #e9f5ff;
@@ -79,8 +113,8 @@
   border-bottom: 1px solid #dee2e6;
   border-left: none !important;
   border-right: none !important;
-  width: 22%;
-  padding: 0.5rem 0.75rem;
+  width: 30%;
+  padding: 0.75rem 1rem;
 }
 
 td {
@@ -88,6 +122,7 @@ td {
   border-bottom: 1px solid #dee2e6;
   border-left: none !important;
   border-right: none !important;
+  padding: 0.75rem 1rem;
 }
 
 .custom-table {
@@ -100,26 +135,3 @@ td {
   padding: 0.4em 0.6em;
 }
 </style>
-
-<script setup>
-import { useRoute } from 'vue-router';
-import { onMounted, computed } from 'vue';
-import { useTransactionStore } from '@/stores/transactionStore';
-
-const route = useRoute();
-const id = parseInt(route.params.id);
-
-const transactionStore = useTransactionStore();
-
-onMounted(async () => {
-  // 거래 목록 없으면 먼저 불러오기
-  if (transactionStore.transactions.length === 0) {
-    await transactionStore.transactionList();
-  }
-
-  // 선택된 거래 설정
-  transactionStore.selectTransaction(id);
-});
-
-const transaction = computed(() => transactionStore.selectedTransaction);
-</script>
