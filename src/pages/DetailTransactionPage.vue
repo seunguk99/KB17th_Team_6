@@ -17,6 +17,10 @@
         <table class="table align-middle custom-table text-center mb-0">
           <tbody>
             <tr>
+              <th class="custom-th">이름</th>
+              <td class="custom-td">{{ transaction.name }}</td>
+            </tr>
+            <tr>
               <th class="custom-th">날짜</th>
               <td class="custom-td">{{ transaction.date }}</td>
             </tr>
