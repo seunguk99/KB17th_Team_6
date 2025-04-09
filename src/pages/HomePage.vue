@@ -11,137 +11,7 @@
         >
           빠른 추가
         </button>
-        <div class="modal" id="quickAdd">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <!-- 제목 -->
-              <div class="modal-header">
-                <h4 class="modal-title">빠른 추가하기</h4>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                ></button>
-              </div>
-
-              <!-- 추가 창 -->
-              <div class="modal-body">
-                <form @submit.prevent="submitTransaction">
-                  <table class="table table-bordered">
-                    <tbody>
-                      <tr>
-                        <th>거래 유형</th>
-                        <td>
-                          <div class="radio-group d-flex">
-                            <div class="form-check me-3">
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                id="income"
-                                value="income"
-                                v-model="transaction.type"
-                              />
-                              <label class="form-check-label" for="income"
-                                >수입</label
-                              >
-                            </div>
-                            <div class="form-check">
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                id="expense"
-                                value="expense"
-                                v-model="transaction.type"
-                              />
-                              <label class="form-check-label" for="expense"
-                                >지출</label
-                              >
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>날짜</th>
-                        <td>
-                          <input
-                            type="date"
-                            class="form-control"
-                            v-model="transaction.date"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>거래 이름</th>
-                        <td>
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="transaction.name"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>금액</th>
-                        <td>
-                          <input
-                            type="number"
-                            class="form-control"
-                            v-model="transaction.amount"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>메모</th>
-                        <td>
-                          <textarea
-                            class="form-control"
-                            v-model="transaction.memo"
-                          ></textarea>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>카테고리</th>
-                        <td>
-                          <select
-                            class="form-control"
-                            v-model="transaction.category"
-                          >
-                            <option value="" disabled>
-                              카테고리를 선택하세요
-                            </option>
-                            <option
-                              v-for="category in allCategories"
-                              :key="category.id"
-                              :value="category.name"
-                            >
-                              {{ category.name }}
-                            </option>
-                          </select>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="text-center my-4">
-                    <button
-                      type="submit"
-                      class="btn btn-primary me-2"
-                      data-bs-dismiss="modal"
-                    >
-                      저장하기
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      data-bs-dismiss="modal"
-                    >
-                      취소하기
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+        <QuickAdd @added="handleAdded" />
       </div>
     </div>
     <div class="row mt-3">
@@ -227,9 +97,7 @@
 import { ref, computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { VueCal } from 'vue-cal';
-import { useTransactionStore } from '@/stores/transactionStore';
-import { onMounted } from 'vue';
-import axios from 'axios';
+import QuickAdd from '@/components/transaction/QuickAdd.vue';
 import 'vue-cal/style';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // 모달 사용 위해
 const date = new Date();
@@ -281,65 +149,7 @@ const expenseTotal = computed(() =>
     .reduce((sum, transaction) => sum + transaction.amount, 0)
 );
 
-//급해서 일단 TransactionWrite 부분 복사
-
-const transactionStore = useTransactionStore();
-
-const transaction = ref({
-  type: 'expense',
-  date: '',
-  name: '',
-  amount: '',
-  memo: '',
-  category: '',
-  userId: userStore.currentUser?.id, // userStore에서 현재 사용자 ID 사용
-});
-
-const incomeCategories = ref([]);
-const expenseCategories = ref([]);
-
-const fetchCategories = async () => {
-  try {
-    const [incomeRes, expenseRes] = await Promise.all([
-      axios.get('/api/incomeCategory'),
-      axios.get('/api/expenseCategory'),
-    ]);
-    incomeCategories.value = incomeRes.data;
-    expenseCategories.value = expenseRes.data;
-  } catch (error) {
-    console.error('카테고리 데이터를 불러오는 중 오류 발생:', error);
-  }
-};
-
-onMounted(async () => {
-  await fetchCategories();
-  await transactionStore.transactionList(); // transactionStore에서 거래 목록 불러오기
-});
-
-const allCategories = computed(() => {
-  return transaction.value.type === 'income'
-    ? incomeCategories.value // 수입 카테고리 리스트
-    : expenseCategories.value; // 지출 카테고리 리스트
-});
-
-const submitTransaction = async () => {
-  try {
-    await axios.post('/api/transactions', transaction.value);
-    await transactionStore.transactionList(); // 거래 목록 갱신
-    alert('거래 내역이 등록되었습니다.');
-    temporary_fetch();
-    transaction.value = {
-      type: 'expense',
-      date: '',
-      name: '',
-      amount: '',
-      memo: '',
-      category: '',
-      userId: userStore.currentUser?.id, // userStore에서 현재 사용자 ID 사용
-    };
-  } catch (error) {
-    console.error('거래 내역 저장 중 오류 발생:', error);
-    alert('거래 내역 저장에 실패했습니다.');
-  }
+const handleAdded = () => {
+  temporary_fetch();
 };
 </script>
