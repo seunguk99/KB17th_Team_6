@@ -38,6 +38,7 @@ const users = computed(() => userStore.userList);
 const login = () => {
   if (selectedUser.value) {
     userStore.currentUser = selectedUser.value;
+    sessionStorage.setItem('currentUser', JSON.stringify(selectedUser.value));
     router.push({ name: 'homePage' });
   }
 };
