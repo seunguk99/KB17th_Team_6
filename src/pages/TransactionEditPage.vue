@@ -99,10 +99,15 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useTransactionStore } from '@/stores/transactionStore';
+import { useUserStore } from '@/stores/userStore';
 import axios from 'axios';
 
 const router = useRouter();
 const route = useRoute();
+const transactionStore = useTransactionStore();
+const userStore = useUserStore();
+
 const transaction = ref({
   type: 'expense',
   date: '',
@@ -110,29 +115,19 @@ const transaction = ref({
   amount: '',
   memo: '',
   category: '',
+  userId: null,
 });
 
-const users = ref([]);
 const incomeCategories = ref([]);
 const expenseCategories = ref([]);
 
-const fetchUsers = async () => {
-  try {
-    const res = await axios.get('http://localhost:3000/users');
-    users.value = res.data;
-  } catch (error) {
-    console.error('사용자 데이터를 불러오는 중 오류 발생:', error);
-  }
-};
-
 const fetchTransaction = async () => {
   try {
-    const res = await axios.get(
-      `http://localhost:3000/transactions/${route.params.id}`
-    );
+    const res = await axios.get(`/api/transactions/${route.params.id}`);
     transaction.value = res.data;
+    transaction.value.userId = res.data.userId;
 
-    const user = users.value.find(
+    const user = userStore.userList.find(
       (user) => user.id === transaction.value.userId
     );
     if (user) {
@@ -146,8 +141,8 @@ const fetchTransaction = async () => {
 const fetchCategories = async () => {
   try {
     const [incomeRes, expenseRes] = await Promise.all([
-      axios.get('http://localhost:3000/incomeCategory'),
-      axios.get('http://localhost:3000/expenseCategory'),
+      axios.get('/api/incomeCategory'),
+      axios.get('/api/expenseCategory'),
     ]);
     incomeCategories.value = incomeRes.data;
     expenseCategories.value = expenseRes.data;
@@ -157,22 +152,24 @@ const fetchCategories = async () => {
 };
 
 onMounted(async () => {
-  await fetchUsers();
-  await fetchCategories();
+  await userStore.fetchUsers();
   await fetchTransaction();
+  await fetchCategories();
 });
 
-const allCategories = computed(() => [
-  ...incomeCategories.value,
-  ...expenseCategories.value,
-]);
+const allCategories = computed(() => {
+  const categories =
+    transaction.value.type === 'income'
+      ? incomeCategories.value
+      : expenseCategories.value;
+  return categories.length
+    ? categories
+    : [{ id: 'default', name: '카테고리 선택' }];
+});
 
 const updateTransaction = async () => {
   try {
-    await axios.put(
-      `http://localhost:3000/transactions/${route.params.id}`,
-      transaction.value
-    );
+    await axios.put(`/api/transactions/${route.params.id}`, transaction.value);
     alert('거래 내역이 성공적으로 수정되었습니다.');
     router.back();
   } catch (error) {
