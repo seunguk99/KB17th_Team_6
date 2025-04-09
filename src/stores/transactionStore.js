@@ -30,7 +30,7 @@ export const useTransactionStore = defineStore('transaction', () => {
 
   // 현재 남은 잔액
   const total = computed(() => {
-    const userId = useUserStore().currentUser?.id;
+    const userId = userStore.currentUser?.id;
 
     const userTransactions = transactions.value.filter(
       (ts) => ts.userId === userId
