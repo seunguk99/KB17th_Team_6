@@ -66,22 +66,21 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
-  const isLoggedIn = !!userStore.currentUser;
 
   //로그인 안하고 다른 페이지 가는 경우 가드
-  if (!isLoggedIn && to.name !== 'userSelection') {
+  if (!userStore.isLoggedIn && to.name !== 'userSelection') {
     return next({ name: 'userSelection' });
   }
 
   //로그인 상태에서 로그인 페이지로 가는 경우 가드
-  if (to.name === 'userSelection' && isLoggedIn) {
+  if (to.name === 'userSelection' && userStore.isLoggedIn) {
     return next({ name: 'homePage' });
   }
   //로그인 페이지에서 뒤로 돌아가기 가드
   if (
     from.name === 'userSelection' &&
     to.name === 'userSelection' &&
-    isLoggedIn
+    userStore.isLoggedIn
   ) {
     return next({ name: 'homePage' });
   }

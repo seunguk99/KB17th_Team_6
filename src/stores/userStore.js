@@ -8,9 +8,13 @@ export const useUserStore = defineStore('user', () => {
 
   // state
   const userList = ref([]);
-  const currentUser = ref(null);
+  // const currentUser = ref(null);
+  const currentUser = ref(
+    JSON.parse(sessionStorage.getItem('currentUser') || null)
+  );
 
   // getter
+  // const isLoggedIn = computed(() => !!currentUser?.value);
   const isLoggedIn = computed(() => !!currentUser.value);
   const userName = computed(() => currentUser.value?.name || '');
   const userEmail = computed(() => currentUser.value?.email || '');
@@ -40,6 +44,7 @@ export const useUserStore = defineStore('user', () => {
     }
   };
   const logout = () => {
+    sessionStorage.removeItem('currentUser');
     currentUser.value = null;
   };
 
