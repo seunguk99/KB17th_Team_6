@@ -32,7 +32,9 @@
       </select>
     </div>
     <TransactionList />
-    <div class="float-end mt-3 mx-3">현재 잔액 : {{ total }}</div>
+    <div class="float-end mt-3 mx-3">
+      현재 잔액 : {{ total.toLocaleString() }}
+    </div>
   </div>
 </template>
 
