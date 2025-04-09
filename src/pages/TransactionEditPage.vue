@@ -4,7 +4,7 @@
       <table class="table table-bordered">
         <tbody>
           <tr>
-            <th>거래 유형</th>
+            <th class="text-center">거래 유형</th>
             <td>
               <div class="radio-group d-flex">
                 <div class="form-check me-3">
@@ -31,7 +31,7 @@
             </td>
           </tr>
           <tr>
-            <th>날짜</th>
+            <th class="text-center">날짜</th>
             <td>
               <input
                 type="date"
@@ -41,7 +41,7 @@
             </td>
           </tr>
           <tr>
-            <th>거래 이름</th>
+            <th class="text-center">거래 이름</th>
             <td>
               <input
                 type="text"
@@ -51,7 +51,7 @@
             </td>
           </tr>
           <tr>
-            <th>금액</th>
+            <th class="text-center">금액</th>
             <td>
               <input
                 type="number"
@@ -61,7 +61,7 @@
             </td>
           </tr>
           <tr>
-            <th>메모</th>
+            <th class="text-center">메모</th>
             <td>
               <textarea
                 class="form-control"
@@ -70,7 +70,7 @@
             </td>
           </tr>
           <tr>
-            <th>카테고리</th>
+            <th class="text-center">카테고리</th>
             <td>
               <select class="form-control" v-model="transaction.category">
                 <option value="" disabled>카테고리를 선택하세요</option>
@@ -184,10 +184,20 @@ const cancel = () => {
 </script>
 
 <style scoped>
+.table {
+  margin-top: -17px;
+}
+
 .table th {
   width: 150px;
   background-color: #f8f9fa;
+  padding: 10px;
 }
+
+.table td {
+  padding: 10px;
+}
+
 .save-button {
   background-color: #f8f9fa;
   border: 1px solid #007bff;
@@ -216,5 +226,9 @@ const cancel = () => {
 .cancel-button:hover {
   background-color: #dc3545;
   color: #fff;
+}
+
+.text-center {
+  text-align: center;
 }
 </style>
