@@ -11,7 +11,7 @@
         >
           빠른 추가
         </button>
-        <QuickAdd />
+        <QuickAdd @transaction-added="onTransactionAdded" />
       </div>
     </div>
     <div class="row mt-3">
@@ -28,7 +28,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="transaction in transactions" :key="transaction.id">
+                <tr
+                  v-for="transaction in transactions.slice().reverse()"
+                  :key="transaction.id"
+                >
                   <td>{{ transaction.date }}</td>
                   <td>{{ transaction.name }}</td>
                   <td
@@ -141,6 +144,10 @@ const onDayClick = (day) => {
   const modalEl = document.getElementById('selected_day_list');
   const modal = new bootstrap.Modal(modalEl);
   modal.show();
+};
+
+const onTransactionAdded = async () => {
+  await transactionStore.monthlyTransactionList();
 };
 
 onMounted(async () => {
