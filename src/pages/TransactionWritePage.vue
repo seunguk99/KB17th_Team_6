@@ -145,6 +145,14 @@ const allCategories = computed(() => {
 });
 
 const submitTransaction = async () => {
+  if (
+    !transaction.value.date ||
+    !transaction.value.amount ||
+    !transaction.value.category
+  ) {
+    alert('날짜, 금액, 카테고리를 입력해야 합니다.');
+    return;
+  }
   try {
     await axios.post('/api/transactions', transaction.value);
     await transactionStore.transactionList(); // 거래 목록 갱신
