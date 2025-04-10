@@ -172,8 +172,6 @@ const allCategories = computed(() =>
     : expenseCategories.value
 );
 
-const emit = defineEmits(['added']);
-
 const submitTransaction = async () => {
   if (
     !transaction.value.date ||
@@ -186,7 +184,6 @@ const submitTransaction = async () => {
   try {
     await axios.post('/api/transactions', transaction.value);
     await transactionStore.transactionList();
-    emit('added');
     alert('거래 내역이 등록되었습니다.');
     transaction.value = {
       type: 'expense',

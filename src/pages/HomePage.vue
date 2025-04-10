@@ -11,7 +11,7 @@
         >
           빠른 추가
         </button>
-        <QuickAdd @added="handleAdded" />
+        <QuickAdd />
       </div>
     </div>
     <div class="row mt-3">
@@ -50,19 +50,21 @@
         <h3>{{ unformatted_month }}월의 수입/지출 요약</h3>
         <div class="card">
           <div class="card-body">
-            <p>💰 수입 : {{ incomeTotal.toLocaleString() }}원</p>
-            <p>💸 지출 : {{ expenseTotal.toLocaleString() }}원</p>
+            <p>💰 수입 : {{ monthly_income.toLocaleString() }}원</p>
+            <p>💸 지출 : {{ monthly_expense.toLocaleString() }}원</p>
             <p
               :class="
-                incomeTotal - expenseTotal >= 0 ? 'text-success' : 'text-danger'
+                monthly_income - monthly_expense >= 0
+                  ? 'text-success'
+                  : 'text-danger'
               "
             >
-              차액 : {{ (incomeTotal - expenseTotal).toLocaleString() }}원
+              차액 : {{ (monthly_income - monthly_expense).toLocaleString() }}원
             </p>
 
             <div
               class="alert alert-primary"
-              v-if="incomeTotal - expenseTotal >= 0"
+              v-if="monthly_income - monthly_expense >= 0"
             >
               👏 잘하고 있어요!
             </div>
@@ -95,8 +97,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '@/stores/userStore';
+import { useTransactionStore } from '@/stores/transactionStore';
 import { VueCal } from 'vue-cal';
 import QuickAdd from '@/components/transaction/QuickAdd.vue';
 import SelectedDayList from '@/components/transaction/SelectedDayList.vue';
@@ -107,34 +110,20 @@ const date = new Date();
 const month = ref();
 month.value = date.getMonth() + 1;
 const userStore = useUserStore();
+const transactionStore = useTransactionStore();
 const userId = userStore.currentUser?.id;
 let unformatted_month = month.value;
 month.value = month.value < 10 ? '0' + month.value : month.value;
 let year_month = date.getFullYear() + '-' + month.value;
 //캘린더 이벤트 관리하기
-const events = ref([]);
+const events = computed(() => transactionStore.events);
 
-//테스트용 트랜잭션 - 후에 store로 이전할 듯
-const transactions = ref([]);
+const transactions = computed(() => transactionStore.transactions);
 
-const temporary_fetch = () =>
-  fetch(
-    `http://localhost:3000/transactions?userId=${userId}&date_like=${year_month}`
-  )
-    .then((response) => response.json())
-    .then((json) => {
-      transactions.value = json;
-      events.value = transactions.value.map((transaction) => ({
-        title: `${
-          transaction.type === 'income' ? '💰 수입' : '💸 지출'
-        }: ${transaction.amount.toLocaleString()}원`,
-        start: transaction.date,
-        end: transaction.date,
-        backgroundColor: transaction.type === 'income' ? '#3B71CA' : '#DC4C64',
-      }));
-    });
-temporary_fetch();
 const selectedDateObj = ref({ year: '', month: '', day: '' });
+
+const monthly_income = computed(() => transactionStore.monthly_income);
+const monthly_expense = computed(() => transactionStore.monthly_expense);
 
 const format_date_to_object = (date) => {
   const yyyy = date.getFullYear();
@@ -154,20 +143,8 @@ const onDayClick = (day) => {
   modal.show();
 };
 
-const incomeTotal = computed(() =>
-  transactions.value
-    .filter((transaction) => transaction.type === 'income')
-    .reduce((sum, transaction) => sum + transaction.amount, 0)
-);
-
-const expenseTotal = computed(() =>
-  transactions.value
-    .filter((transaction) => transaction.type === 'expense')
-    .reduce((sum, transaction) => sum + transaction.amount, 0)
-);
-
-const handleAdded = () => {
-  temporary_fetch();
-};
-
+onMounted(async () => {
+  await transactionStore.transactionList();
+  await transactionStore.monthlyTransactionList();
+});
 </script>

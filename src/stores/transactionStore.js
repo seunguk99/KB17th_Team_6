@@ -11,6 +11,7 @@ export const useTransactionStore = defineStore('transaction', () => {
 
   // state
   const transactions = ref([]);
+  const monthlyTransactions = ref([]);
   const selectedTransaction = ref(null);
 
   const filterdTransactions = ref([]);
@@ -18,6 +19,7 @@ export const useTransactionStore = defineStore('transaction', () => {
   const selectedMonth = ref(null);
   // const selectedCategory = ref(null);
   const selectedType = ref(null);
+  const events = ref([]);
 
   // getters
   const income = computed(() => {
@@ -26,6 +28,18 @@ export const useTransactionStore = defineStore('transaction', () => {
 
   const expense = computed(() => {
     filterdTransactions.value.filter((ts) => ts.type === 'expense');
+  });
+
+  const monthly_income = computed(() => {
+    return monthlyTransactions.value
+      .filter((transaction) => transaction.type === 'income')
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
+  });
+
+  const monthly_expense = computed(() => {
+    return monthlyTransactions.value
+      .filter((transaction) => transaction.type === 'expense')
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
   });
 
   // 현재 남은 잔액
@@ -58,9 +72,23 @@ export const useTransactionStore = defineStore('transaction', () => {
       transactions.value = [];
       return;
     }
-    transactions.value = response.data
-      .filter((tx) => tx.userId === userId)
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    transactions.value = response.data.filter((tx) => tx.userId === userId);
+    updateEvents(transactions.value);
+  };
+
+  //캘린더 이벤트 업데이트 함수
+  const updateEvents = (transactionList) => {
+    events.value = transactionList.map((transaction) => ({
+      title: `${
+        transaction.type === 'income' ? '💰 수입' : '💸 지출'
+      }: ${transaction.amount.toLocaleString()}원`,
+      start: transaction.date,
+      end: transaction.date,
+      backgroundColor: transaction.type === 'income' ? '#3B71CA' : '#DC4C64',
+    }));
+    console.log(events.value);
+
   };
 
   // 현재 선택 거래
@@ -98,6 +126,25 @@ export const useTransactionStore = defineStore('transaction', () => {
     }
   };
 
+  const monthlyTransactionList = async () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const y_m = year + '-' + month;
+    const userStore = useUserStore();
+    const userId = userStore.currentUser?.id;
+    console.log(y_m);
+    const response = await axios.get(
+      `${TsURL}?userId=${userId}&date_like=${y_m}`
+    );
+
+    if (!userId) {
+      transactions.value = [];
+      return;
+    }
+    monthlyTransactions.value = response.data;
+  };
+
   return {
     transactions,
     selectedTransaction,
@@ -112,5 +159,9 @@ export const useTransactionStore = defineStore('transaction', () => {
     expense,
     total,
     deleteTransaction,
+    events,
+    monthlyTransactionList,
+    monthly_income,
+    monthly_expense,
   };
 });
