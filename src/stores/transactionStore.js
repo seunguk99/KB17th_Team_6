@@ -83,6 +83,19 @@ export const useTransactionStore = defineStore('transaction', () => {
     });
   };
 
+  // 거래 삭제 함수 추가
+  const deleteTransaction = async (id) => {
+    try {
+      await axios.delete(`${TsURL}/${id}`);
+      // 삭제된 거래는 state에서도 제거해줘야 함
+      transactions.value = transactions.value.filter((ts) => ts.id !== id);
+      // 선택된 거래 초기화
+      selectedTransaction.value = null;
+    } catch (error) {
+      console.error('삭제 중 오류 발생:', error);
+    }
+  };
+
   return {
     transactions,
     selectedTransaction,
@@ -96,5 +109,6 @@ export const useTransactionStore = defineStore('transaction', () => {
     income,
     expense,
     total,
+    deleteTransaction,
   };
 });
