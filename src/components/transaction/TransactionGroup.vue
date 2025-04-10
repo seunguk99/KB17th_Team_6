@@ -57,13 +57,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
 import { useTransactionStore } from '@/stores/transactionStore';
 import TransactionList from './TransactionList.vue';
 import { createChartData, chartOptions, Chart } from '@/Chart/chart.js';
+import { useUserStore } from '@/stores/userStore';
 
 const store = useTransactionStore();
-const total = ref(store.total);
+const userStore = useUserStore();
+
+const total = computed(() => store.total);
 const chartCanvas = ref(null);
 let chartInstance = null;
 
