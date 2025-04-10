@@ -19,8 +19,7 @@
       "type": "income",
       "category": "월급",
       "amount": 3000000,
-      "memo": "2025년 3월 근무에 대한 월급 수령",
-      "name": "3월 월급"
+      "memo": "3월 급여"
     },
     {
       "id": 2,
@@ -29,8 +28,7 @@
       "type": "expense",
       "category": "식비",
       "amount": 4500,
-      "memo": "점심 식사로 도시락 구매 - OO역 CU",
-      "name": "도시락 구매"
+      "memo": "도시락 구매"
     },
     {
       "id": 3,
@@ -39,8 +37,7 @@
       "type": "expense",
       "category": "교통비",
       "amount": 1250,
-      "memo": "출근 지하철 요금 결제",
-      "name": "지하철 출근"
+      "memo": "출근 지하철"
     },
     {
       "id": 4,
@@ -49,8 +46,17 @@
       "type": "income",
       "category": "용돈",
       "amount": 100000,
-      "memo": "4월 생활비로 부모님께 받은 용돈",
-      "name": "4월 용돈"
+      "memo": "월초 용돈"
+    },
+    {
+      "type": "expense",
+      "date": "2025-04-09",
+      "name": "돈거래",
+      "amount": 10000,
+      "memo": "eh",
+      "category": "식비",
+      "userId": 1,
+      "id": 5
     }
   ],
   "incomeCategory": [

@@ -149,6 +149,7 @@ const submitTransaction = async () => {
     await axios.post('/api/transactions', transaction.value);
     await transactionStore.transactionList(); // 거래 목록 갱신
     alert('거래 내역이 등록되었습니다.');
+    location.reload(); // 페이지 새로고침
   } catch (error) {
     console.error('거래 내역 저장 중 오류 발생:', error);
     alert('거래 내역 저장에 실패했습니다.');
