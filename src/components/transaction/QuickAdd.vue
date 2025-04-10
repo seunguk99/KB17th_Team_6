@@ -131,7 +131,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, defineEmits } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useUserStore } from '@/stores/userStore';
 import { useTransactionStore } from '@/stores/transactionStore';
