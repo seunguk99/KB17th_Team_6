@@ -90,9 +90,7 @@ const id = parseInt(route.params.id);
 const transactionStore = useTransactionStore();
 
 onMounted(async () => {
-  if (transactionStore.transactions.length === 0) {
-    await transactionStore.transactionList();
-  }
+  await transactionStore.transactionList();
   transactionStore.selectTransaction(id);
 });
 
