@@ -58,7 +58,9 @@ export const useTransactionStore = defineStore('transaction', () => {
       transactions.value = [];
       return;
     }
-    transactions.value = response.data.filter((tx) => tx.userId === userId);
+    transactions.value = response.data
+      .filter((tx) => tx.userId === userId)
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
   };
 
   // 현재 선택 거래
