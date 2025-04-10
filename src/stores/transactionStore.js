@@ -89,7 +89,7 @@ export const useTransactionStore = defineStore('transaction', () => {
       end: transaction.date,
       backgroundColor: transaction.type === 'income' ? '#3B71CA' : '#DC4C64',
     }));
-    console.log(events.value);
+    // console.log(events.value);
   };
 
   // 현재 선택 거래
@@ -134,7 +134,7 @@ export const useTransactionStore = defineStore('transaction', () => {
     const y_m = year + '-' + month;
     const userStore = useUserStore();
     const userId = userStore.currentUser?.id;
-    console.log(y_m);
+    // console.log(y_m);
     const response = await axios.get(
       `${TsURL}?userId=${userId}&date_like=${y_m}`
     );

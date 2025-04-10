@@ -24,7 +24,7 @@
             <tbody>
               <tr v-for="transaction in transactions" :key="transaction.id">
                 <td>{{ transaction.name }}</td>
-                <td>{{ transaction.type }}</td>
+                <td>{{ transaction.type === 'income' ? '수입' : '지출' }}</td>
                 <td>{{ transaction.category }}</td>
                 <td>{{ transaction.amount.toLocaleString() }}원</td>
                 <td>{{ transaction.memo }}</td>
@@ -62,9 +62,7 @@ const userStore = useUserStore();
 const userId = userStore.currentUser?.id;
 const transactions = ref([]);
 
-// 함수로 분리해서 fetch 실행
 const fetchTransactions = () => {
-  // 날짜 값이 없으면 요청하지 않음
   if (!props.selectedDate.year) {
     transactions.value = [];
     return;
@@ -72,7 +70,7 @@ const fetchTransactions = () => {
 
   const dateStr = `${props.selectedDate.year}-${props.selectedDate.month}-${props.selectedDate.day}`;
 
-  fetch(`http://localhost:3000/transactions?userId=${userId}&date=${dateStr}`)
+  fetch(`/api/transactions?userId=${userId}&date=${dateStr}`)
     .then((response) => response.json())
     .then((json) => {
       transactions.value = json;
@@ -83,14 +81,11 @@ const fetchTransactions = () => {
     });
 };
 
-// 컴포넌트 마운트 시 한 번 fetch
 fetchTransactions();
 
-// props.selectedDate 변경 감지해서 fetch 다시 실행
 watch(
   () => props.selectedDate,
   (newVal, oldVal) => {
-    // 값이 달라졌으면 fetch 실행
     fetchTransactions();
   },
   { deep: true }

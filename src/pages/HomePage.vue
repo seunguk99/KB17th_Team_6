@@ -28,10 +28,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  v-for="transaction in transactions.slice().reverse()"
-                  :key="transaction.id"
-                >
+                <tr v-for="transaction in transactions" :key="transaction.id">
                   <td>{{ transaction.date }}</td>
                   <td>{{ transaction.name }}</td>
                   <td
@@ -67,7 +64,7 @@
 
             <div
               class="alert alert-primary"
-              v-if="monthly_income - monthly_expense >= 0"
+              v-if="monthly_income - monthly_expense > 0"
             >
               👏 잘하고 있어요!
             </div>
@@ -101,7 +98,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useUserStore } from '@/stores/userStore';
 import { useTransactionStore } from '@/stores/transactionStore';
 import { VueCal } from 'vue-cal';
 import QuickAdd from '@/components/transaction/QuickAdd.vue';
@@ -112,12 +108,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // 모달 사용 위해
 const date = new Date();
 const month = ref();
 month.value = date.getMonth() + 1;
-const userStore = useUserStore();
 const transactionStore = useTransactionStore();
-const userId = userStore.currentUser?.id;
 let unformatted_month = month.value;
 month.value = month.value < 10 ? '0' + month.value : month.value;
-let year_month = date.getFullYear() + '-' + month.value;
 //캘린더 이벤트 관리하기
 const events = computed(() => transactionStore.events);
 
