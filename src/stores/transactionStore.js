@@ -73,7 +73,9 @@ export const useTransactionStore = defineStore('transaction', () => {
       return;
     }
 
-    transactions.value = response.data.filter((tx) => tx.userId === userId);
+    transactions.value = response.data
+      .filter((tx) => tx.userId === userId)
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
     updateEvents(transactions.value);
   };
 
@@ -88,7 +90,6 @@ export const useTransactionStore = defineStore('transaction', () => {
       backgroundColor: transaction.type === 'income' ? '#3B71CA' : '#DC4C64',
     }));
     console.log(events.value);
-
   };
 
   // 현재 선택 거래
