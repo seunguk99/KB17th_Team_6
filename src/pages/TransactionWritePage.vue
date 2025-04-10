@@ -148,12 +148,16 @@ const allCategories = computed(() => {
 });
 
 const submitTransaction = async () => {
-  if (
-    !transaction.value.date ||
-    !transaction.value.amount ||
-    !transaction.value.category
-  ) {
-    alert('날짜, 금액, 카테고리를 입력해야 합니다.');
+  if (!transaction.value.date) {
+    alert('📅 날짜를 입력해주세요.');
+    return;
+  }
+  if (!transaction.value.amount || transaction.value.amount <= 0) {
+    alert('💰 올바른 금액을 입력해주세요.');
+    return;
+  }
+  if (!transaction.value.category) {
+    alert('📂 카테고리를 선택해주세요.');
     return;
   }
   try {
