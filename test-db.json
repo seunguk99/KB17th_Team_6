@@ -1,0 +1,140 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "홍길동",
+      "email": "hong@test.com"
+    },
+    {
+      "id": 2,
+      "name": "김철수",
+      "email": "kim@test.com"
+    }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "userId": 1,
+      "date": "2024-12-05",
+      "type": "income",
+      "category": "월급",
+      "amount": 9,
+      "memo": "2024년 11월 급여 수령",
+      "name": "11월 월급"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "date": "2024-12-10",
+      "type": "expense",
+      "category": "식비",
+      "amount": 2,
+      "memo": "점심 식대 - 회사 근처 김밥천국",
+      "name": "점심식사"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "date": "2025-03-01",
+      "type": "income",
+      "category": "이자",
+      "amount": 5,
+      "memo": "예금 이자 수령",
+      "name": "3월 이자"
+    },
+    {
+      "id": 4,
+      "userId": 1,
+      "date": "2025-03-20",
+      "type": "expense",
+      "category": "교통비",
+      "amount": 6,
+      "memo": "출근 버스 요금",
+      "name": "버스 요금"
+    },
+    {
+      "id": 5,
+      "userId": 1,
+      "date": "2025-04-01",
+      "type": "expense",
+      "category": "식비",
+      "amount": 4,
+      "memo": "점심 도시락",
+      "name": "도시락 구입"
+    },
+    {
+      "id": 6,
+      "userId": 1,
+      "date": "2025-04-05",
+      "type": "income",
+      "category": "용돈",
+      "amount": 7,
+      "memo": "부모님께 받은 생활비",
+      "name": "4월 용돈"
+    },
+    {
+      "id": 7,
+      "userId": 1,
+      "date": "2025-04-10",
+      "type": "expense",
+      "category": "식비",
+      "amount": 4,
+      "memo": "저녁 배달",
+      "name": "배달 저녁"
+    },
+    {
+      "id": 8,
+      "userId": 1,
+      "date": "2025-04-15",
+      "type": "expense",
+      "category": "공과금",
+      "amount": 3,
+      "memo": "4월 전기세 납부",
+      "name": "전기세"
+    }
+  ],
+  "incomeCategory": [
+    {
+      "id": 1,
+      "name": "월급"
+    },
+    {
+      "id": 2,
+      "name": "용돈"
+    },
+    {
+      "id": 3,
+      "name": "이자"
+    },
+    {
+      "id": 4,
+      "name": "기타"
+    }
+  ],
+  "expenseCategory": [
+    {
+      "id": 1,
+      "name": "식비"
+    },
+    {
+      "id": 2,
+      "name": "교통비"
+    },
+    {
+      "id": 3,
+      "name": "주거비"
+    },
+    {
+      "id": 4,
+      "name": "유흥"
+    },
+    {
+      "id": 5,
+      "name": "공과금"
+    },
+    {
+      "id": 6,
+      "name": "기타"
+    }
+  ]
+}
