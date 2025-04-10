@@ -87,6 +87,7 @@
             @cell-click="onDayClick"
           >
           </vue-cal>
+          <SelectedDayList :selected-date="selectedDateObj" />
         </div>
       </div>
     </div>
@@ -98,6 +99,8 @@ import { ref, computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { VueCal } from 'vue-cal';
 import QuickAdd from '@/components/transaction/QuickAdd.vue';
+import SelectedDayList from '@/components/transaction/SelectedDayList.vue';
+import * as bootstrap from 'bootstrap';
 import 'vue-cal/style';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // 모달 사용 위해
 const date = new Date();
@@ -131,10 +134,24 @@ const temporary_fetch = () =>
       }));
     });
 temporary_fetch();
-const clickedDate = ref(null);
+const selectedDateObj = ref({ year: '', month: '', day: '' });
+
+const format_date_to_object = (date) => {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return {
+    year: yyyy,
+    month: mm,
+    day: dd,
+  };
+};
 
 const onDayClick = (day) => {
-  console.log('Clicked date:', day.cell.start);
+  selectedDateObj.value = format_date_to_object(day.cell.start);
+  const modalEl = document.getElementById('selected_day_list');
+  const modal = new bootstrap.Modal(modalEl);
+  modal.show();
 };
 
 const incomeTotal = computed(() =>
@@ -152,4 +169,5 @@ const expenseTotal = computed(() =>
 const handleAdded = () => {
   temporary_fetch();
 };
+
 </script>
