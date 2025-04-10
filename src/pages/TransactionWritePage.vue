@@ -47,6 +47,7 @@
                 type="text"
                 class="form-control"
                 v-model="transaction.name"
+                placeholder="거래 이름을 입력해 주세요. (선택 사항)"
               />
             </td>
           </tr>
@@ -57,6 +58,7 @@
                 type="number"
                 class="form-control"
                 v-model="transaction.amount"
+                placeholder="금액을 입력해 주세요."
               />
             </td>
           </tr>
@@ -66,6 +68,7 @@
               <textarea
                 class="form-control"
                 v-model="transaction.memo"
+                placeholder="메모를 입력해 주세요. (선택 사항)"
               ></textarea>
             </td>
           </tr>
