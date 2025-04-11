@@ -28,6 +28,8 @@ Vue.js 기반의 SPA 가계부 애플리케이션입니다. 사용자 선택, �
 | 아이콘        | Font Awesome            |
 | API 통신      | Axios                   |
 | 목서버        | JSON Server             |
+| 차트 시각화     | Chat.js            |
+| 캘린더    | Vue-Cal           |
 | 협업 도구     | Git / GitHub            |
 
 ---
